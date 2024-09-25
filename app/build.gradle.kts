@@ -7,6 +7,10 @@ android {
     namespace = "com.ismailmesutmujde.kotlinschoollessonscoreappfirebaserealtimedatabase"
     compileSdk = 34
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.ismailmesutmujde.kotlinschoollessonscoreappfirebaserealtimedatabase"
         minSdk = 24
