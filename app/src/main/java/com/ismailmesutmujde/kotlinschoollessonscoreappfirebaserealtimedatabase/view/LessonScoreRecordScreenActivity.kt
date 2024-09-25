@@ -5,12 +5,16 @@ import android.os.Bundle
 import android.text.TextUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.ismailmesutmujde.kotlinschoollessonscoreappfirebaserealtimedatabase.databinding.ActivityLessonScoreRecordScreenBinding
+import com.ismailmesutmujde.kotlinschoollessonscoreappfirebaserealtimedatabase.model.LessonScores
 
 
 class LessonScoreRecordScreenActivity : AppCompatActivity() {
 
     private lateinit var bindingLessonScoreRecord : ActivityLessonScoreRecordScreenBinding
+    private lateinit var refLessonScores : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +24,9 @@ class LessonScoreRecordScreenActivity : AppCompatActivity() {
 
         bindingLessonScoreRecord.toolbarLessonScoreRecord.title = "Lesson Score Record"
         setSupportActionBar(bindingLessonScoreRecord.toolbarLessonScoreRecord)
+
+        val db = FirebaseDatabase.getInstance()
+        refLessonScores = db.getReference("lessonscores")
 
         bindingLessonScoreRecord.buttonSave.setOnClickListener {
             val lesson_name = bindingLessonScoreRecord.editTextLesson.text.toString().trim()
@@ -40,6 +47,9 @@ class LessonScoreRecordScreenActivity : AppCompatActivity() {
                 Snackbar.make(bindingLessonScoreRecord.toolbarLessonScoreRecord, "Enter 2nd Score", Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            val lessonScore = LessonScores("", lesson_name, score1.toInt(), score2.toInt())
+            refLessonScores.push().setValue(lessonScore)
 
             val intent = Intent(this@LessonScoreRecordScreenActivity, MainScreenActivity::class.java)
             startActivity(intent)
